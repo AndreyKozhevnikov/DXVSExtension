@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -35,6 +36,7 @@ namespace DXVSExtension {
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(DeleteBaseCommandPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [ProvideOptionPage(typeof(OptionPageGrid), "DXVSExtenstion", "Extension properties", 0, 0, true)]
     public sealed class DeleteBaseCommandPackage : AsyncPackage {
         /// <summary>
         /// DeleteBaseCommandPackage GUID string.
@@ -50,6 +52,15 @@ namespace DXVSExtension {
             // not sited yet inside Visual Studio environment. The place to do all the other
             // initialization is the Initialize method.
         }
+
+        public string DeleteProgramFilePath {
+            get {
+                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                var st = page.DeleteProgramFilePath;
+                return st;
+            }
+        }
+
 
         #region Package Members
 
@@ -68,5 +79,16 @@ namespace DXVSExtension {
         }
 
         #endregion
+    }
+
+    public class OptionPageGrid : DialogPage {
+        private string deleteProgramFilePath = @"c:\Dropbox\Deploy\DelMSSQLDataBase\DelMSSQLDataBase.exe";
+        [Category("DeleteProgramFilePath")]
+        [DisplayName("DeleteProgramFilePath")]
+        [Description("Path to DelMSSQLDataBase.exe")]
+        public string DeleteProgramFilePath {
+            get { return deleteProgramFilePath; }
+            set { deleteProgramFilePath = value; }
+        }
     }
 }
