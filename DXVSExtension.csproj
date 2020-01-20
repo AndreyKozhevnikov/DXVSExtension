@@ -51,6 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BackupDatabaseCommand.cs" />
     <Compile Include="DeleteBaseCommand.cs" />
     <Compile Include="DeleteBaseCommandPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\BackupDatabaseCommand.png" />
     <Content Include="Resources\DeleteBaseCommand.png" />
     <Content Include="Resources\DeleteBaseCommandPackage.ico" />
   </ItemGroup>
