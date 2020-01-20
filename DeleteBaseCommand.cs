@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -59,6 +65,8 @@ namespace DXVSExtension {
             }
         }
 
+
+
         /// <summary>
         /// Initializes the singleton instance of the command.
         /// </summary>
@@ -79,19 +87,53 @@ namespace DXVSExtension {
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e) {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "DeleteBaseCommand";
+        private async void Execute(object sender, EventArgs e) {
+            DTE dte = await package.GetServiceAsync(typeof(DTE)).ConfigureAwait(false) as DTE;
+            var slnName = dte.Solution.FullName;
+            var solutionFolderName = Path.GetDirectoryName(slnName);
+            List<string> configFiles = new List<string>();
+            configFiles.AddRange(Directory.GetFiles(solutionFolderName, "app.config", SearchOption.AllDirectories));
+            configFiles.AddRange(Directory.GetFiles(solutionFolderName, "web.config", SearchOption.AllDirectories));
+            // var dbNamePattern = @"<add name=""ConnectionString"" connectionString=""Integrated Security=SSPI;Pooling=false;Data Source=\(localdb\)\\mssqllocaldb;Initial Catalog=(?<dbname>.*)""";
+            foreach(var confFile in configFiles) {
+                using(var sw = new StreamReader(confFile)) {
+                    var xDocument = XDocument.Load(confFile);
+                    var el = xDocument.Root;
+                    var el2 = xDocument.Root.Elements();
+                    var configNode = xDocument.Root.Elements().Where(x => x.Name.LocalName == "connectionStrings").First();
+                    var configs = configNode.Elements();
+                    var nameXName = XName.Get("name", configNode.Name.Namespace.NamespaceName);
 
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                    var realConfig = configs.Where(x => x.Attribute(nameXName).Value == "ConnectionString").FirstOrDefault();
+
+                    if(realConfig != null) {
+                        var nameXConnectionString = XName.Get("connectionString", configNode.Name.Namespace.NamespaceName);
+                        var connectionString = realConfig.Attribute(nameXConnectionString).Value;
+                        var dbNamePattern = @"Initial Catalog=(?<dbname>.*)";
+                        var dbNameRegex = new Regex(dbNamePattern);
+                        Match dbNameMatch = dbNameRegex.Match(connectionString);
+                        var dbName = dbNameMatch.Groups["dbname"].Value;
+                        DeleteDb(dbName);
+                        return;
+                    } else {
+                        VsShellUtilities.ShowMessageBox(this.package,
+                            "No database was found",
+                            "Not found",
+                            OLEMSGICON.OLEMSGICON_INFO,
+                            OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                            OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+                    }
+                }
+            }
+        }
+
+        public void DeleteDb(string dbName) {
+            DeleteBaseCommandPackage options = package as DeleteBaseCommandPackage;
+            var deleteProcessPath = options.DeleteProgramFilePath;
+            System.Diagnostics.Process proc = new System.Diagnostics.Process();
+            proc.StartInfo.FileName = deleteProcessPath;
+            proc.StartInfo.Arguments = "-" + dbName;
+            proc.Start();
         }
     }
 }
