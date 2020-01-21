@@ -34,19 +34,19 @@ namespace DXVSExtension {
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(DeleteBaseCommandPackage.PackageGuidString)]
+    [Guid(DXVSExtensionPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideOptionPage(typeof(OptionPageGrid), "DXVSExtenstion", "Extension properties", 0, 0, true)]
-    public sealed class DeleteBaseCommandPackage : AsyncPackage {
+    public sealed class DXVSExtensionPackage : AsyncPackage {
         /// <summary>
         /// DeleteBaseCommandPackage GUID string.
         /// </summary>
         public const string PackageGuidString = "93087a61-01c5-4d3a-9a65-38877026106f";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteBaseCommandPackage"/> class.
+        /// Initializes a new instance of the <see cref="DXVSExtensionPackage"/> class.
         /// </summary>
-        public DeleteBaseCommandPackage() {
+        public DXVSExtensionPackage() {
             // Inside this method you can place any initialization code that does not require
             // any Visual Studio service because at this point the package object is created but
             // not sited yet inside Visual Studio environment. The place to do all the other
@@ -60,7 +60,13 @@ namespace DXVSExtension {
                 return st;
             }
         }
-
+        public string BackupDBFilePath {
+            get {
+                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                var st = page.BackupDBFilePath;
+                return st;
+            }
+        }
 
         #region Package Members
 
@@ -76,20 +82,28 @@ namespace DXVSExtension {
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await DeleteBaseCommand.InitializeAsync(this);
-    await BackupDatabaseCommand.InitializeAsync(this);
+            await BackupDatabaseCommand.InitializeAsync(this);
         }
 
         #endregion
     }
 
     public class OptionPageGrid : DialogPage {
-        private string deleteProgramFilePath = @"c:\Dropbox\Deploy\DelMSSQLDataBase\DelMSSQLDataBase.exe";
+        private string _deleteProgramFilePath = @"c:\Dropbox\Deploy\DelMSSQLDataBase\DelMSSQLDataBase.exe";
         [Category("DeleteProgramFilePath")]
         [DisplayName("DeleteProgramFilePath")]
         [Description("Path to DelMSSQLDataBase.exe")]
         public string DeleteProgramFilePath {
-            get { return deleteProgramFilePath; }
-            set { deleteProgramFilePath = value; }
+            get { return _deleteProgramFilePath; }
+            set { _deleteProgramFilePath = value; }
+        }
+        private string _backupDBFilePath = @"c:\Dropbox\Deploy\BackupDBDeploy\BackupDBtoFolderCmd.exe";
+        [Category("BackupDBFilePath")]
+        [DisplayName("BackupDBFilePath")]
+        [Description("Path to BackupDBtoFolderCmd.exe")]
+        public string BackupDBFilePath {
+            get { return _backupDBFilePath; }
+            set { _backupDBFilePath = value; }
         }
     }
 }
