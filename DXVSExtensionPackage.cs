@@ -41,7 +41,7 @@ namespace DXVSExtension {
         /// <summary>
         /// DeleteBaseCommandPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "93087a61-01c5-4d3a-9a65-38877026106f";
+        public const string PackageGuidString = "93087a61-01c5-4d3a-9a65-38877026106d";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DXVSExtensionPackage"/> class.
