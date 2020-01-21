@@ -55,6 +55,7 @@
     <Compile Include="DeleteBaseCommand.cs" />
     <Compile Include="DeleteBaseCommandPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SolutionDataProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Key.snk" />
