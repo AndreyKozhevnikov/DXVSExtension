@@ -10,8 +10,10 @@ using System.Xml.Linq;
 namespace DXVSExtension {
     public class SolutionDataProvider {
         public string DatabaseName{ get; set; }
+        public string SoluitonParentFolderName{ get; set; }
         public SolutionDataProvider(string solutionFullName) {
             var solutionFolderName = Path.GetDirectoryName(solutionFullName);
+            SoluitonParentFolderName = Directory.GetParent(solutionFolderName).FullName;
             List<string> configFiles = new List<string>();
             configFiles.AddRange(Directory.GetFiles(solutionFolderName, "app.config", SearchOption.AllDirectories));
             configFiles.AddRange(Directory.GetFiles(solutionFolderName, "web.config", SearchOption.AllDirectories));

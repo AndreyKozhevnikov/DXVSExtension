@@ -104,7 +104,7 @@ namespace DXVSExtension {
         }
 
         public void DeleteDb(string dbName) {
-            DeleteBaseCommandPackage options = package as DeleteBaseCommandPackage;
+            DXVSExtensionPackage options = package as DXVSExtensionPackage;
             var deleteProcessPath = options.DeleteProgramFilePath;
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
             proc.StartInfo.FileName = deleteProcessPath;

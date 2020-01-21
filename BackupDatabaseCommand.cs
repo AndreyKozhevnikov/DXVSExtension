@@ -3,6 +3,7 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -79,19 +80,30 @@ namespace DXVSExtension {
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e) {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "BackupDatabaseCommand";
+        private async void Execute(object sender, EventArgs e) {
+            DTE dte = await package.GetServiceAsync(typeof(DTE)).ConfigureAwait(false) as DTE;
+            var slnName = dte.Solution.FullName;
+            var solutionData = new SolutionDataProvider(slnName);
+            if(solutionData.DatabaseName != null) {
+                backupDB(solutionData.DatabaseName, solutionData.SoluitonParentFolderName);
+            } else {
+                VsShellUtilities.ShowMessageBox(this.package,
+                    "No database was found",
+                    "Not found",
+                    OLEMSGICON.OLEMSGICON_INFO,
+                    OLEMSGBUTTON.OLEMSGBUTTON_OK,
+                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            }
+        }
 
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        void backupDB(string dbName, string backupPath) {
+            DXVSExtensionPackage options = package as DXVSExtensionPackage;
+            var deleteProcessPath = options.BackupDBFilePath;
+            System.Diagnostics.Process proc = new System.Diagnostics.Process();
+            proc.StartInfo.FileName = deleteProcessPath;
+            backupPath = "\"" + backupPath + "\"";
+            proc.StartInfo.Arguments = string.Join(" ", new string[] { dbName,backupPath });
+            proc.Start();
         }
     }
 }
