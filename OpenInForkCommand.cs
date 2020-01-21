@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -79,19 +81,20 @@ namespace DXVSExtension {
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private void Execute(object sender, EventArgs e) {
-            ThreadHelper.ThrowIfNotOnUIThread();
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "OpenInForkCommand";
-
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.package,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+        private async void Execute(object sender, EventArgs e) {
+            DTE dte = await package.GetServiceAsync(typeof(DTE)).ConfigureAwait(false) as DTE;
+            var slnName = dte.Solution.FullName;
+            var solutionFolderName = Path.GetDirectoryName(slnName);
+            openInFork(solutionFolderName);
+        }
+        void openInFork(string gitFolderName) {
+            DXVSExtensionPackage options = package as DXVSExtensionPackage;
+            var forkPath = options.ForkFilePath;
+            System.Diagnostics.Process proc = new System.Diagnostics.Process();
+            proc.StartInfo.FileName = forkPath;
+            gitFolderName = "\"" + gitFolderName + "\"";
+            proc.StartInfo.Arguments = gitFolderName;
+            proc.Start();
         }
     }
 }

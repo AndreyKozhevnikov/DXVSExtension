@@ -54,6 +54,7 @@
     <Compile Include="BackupDatabaseCommand.cs" />
     <Compile Include="DeleteBaseCommand.cs" />
     <Compile Include="DXVSExtensionPackage.cs" />
+    <Compile Include="OpenInForkCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionDataProvider.cs" />
   </ItemGroup>
@@ -82,6 +83,7 @@
     <Content Include="Resources\BackupDatabaseCommand.png" />
     <Content Include="Resources\DeleteBaseCommand.png" />
     <Content Include="Resources\DeleteBaseCommandPackage.ico" />
+    <Content Include="Resources\OpenInForkCommand.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

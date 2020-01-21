@@ -108,5 +108,40 @@
       <IDSymbol name="bmpPicArrows" value="5" />
       <IDSymbol name="bmpPicStrikethrough" value="6" />
     </GuidSymbol>
+  
+    <GuidSymbol value="{93087a61-01c5-4d3a-9a65-38877026106d}" name="guidDXVSExtensionPackage" />
+  
+    <GuidSymbol value="{e74349e3-5f0c-4882-b9a8-262588b29050}" name="guidDXVSExtensionPackageCmdSet">
+      <IDSymbol value="4128" name="MyMenuGroup" />
+      <IDSymbol value="256" name="cmdidOpenInForkCommand" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{c1943d50-1827-41ca-a8db-52cf2fdf5d30}" name="guidImages2">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
   </Symbols>
+  <Commands package="guidDXVSExtensionPackage">
+    <Groups>
+      <Group guid="guidDXVSExtensionPackageCmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
+      </Group>
+    </Groups>
+    <Bitmaps>
+      <Bitmap guid="guidImages2" href="Resources\OpenInForkCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+    </Bitmaps>
+    <Buttons>
+      <Button guid="guidDXVSExtensionPackageCmdSet" id="cmdidOpenInForkCommand" priority="0x0100" type="Button">
+        <Parent guid="guidDXVSExtensionPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages2" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Invoke OpenInForkCommand</ButtonText>
+        </Strings>
+      </Button>
+    </Buttons>
+  </Commands>
 </CommandTable>

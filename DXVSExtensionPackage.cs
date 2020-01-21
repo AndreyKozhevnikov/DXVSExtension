@@ -67,6 +67,14 @@ namespace DXVSExtension {
                 return st;
             }
         }
+        public string ForkFilePath {
+            get {
+                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                var st = page.ForkFilePath;
+                return st;
+            }
+        }
+
 
         #region Package Members
 
@@ -83,6 +91,7 @@ namespace DXVSExtension {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await DeleteBaseCommand.InitializeAsync(this);
             await BackupDatabaseCommand.InitializeAsync(this);
+            await OpenInForkCommand.InitializeAsync(this);
         }
 
         #endregion
@@ -104,6 +113,15 @@ namespace DXVSExtension {
         public string BackupDBFilePath {
             get { return _backupDBFilePath; }
             set { _backupDBFilePath = value; }
+        }
+
+        private string _forkFilePath = @"C:\Users\kozhevnikov.andrey\AppData\Local\Fork\Fork.exe";
+        [Category("ForkFilePath")]
+        [DisplayName("ForkFilePath")]
+        [Description("Path to Fork.exe")]
+        public string ForkFilePath {
+            get { return _forkFilePath; }
+            set { _forkFilePath = value; }
         }
     }
 }
