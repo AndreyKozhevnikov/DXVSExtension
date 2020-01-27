@@ -52,13 +52,7 @@
               <CommandFlag>DefaultInvisible</CommandFlag>
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
-      <Button guid="guidDeleteBaseCommandPackageCmdSet" id="DeleteBaseCommandId" priority="0x0100" type="Button">
-        <Parent guid="guidDeleteBaseCommandPackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
-        <Strings>
-          <ButtonText>Invoke DeleteBaseCommand</ButtonText>
-        </Strings>
-      </Button>
+
       <Button guid="guidDeleteBaseCommandPackageCmdSet" id="cmdidBackupDatabaseCommand" priority="0x0100" type="Button">
         <Parent guid="guidDeleteBaseCommandPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages1" id="bmpPic1" />
@@ -114,9 +108,19 @@
     <GuidSymbol value="{e74349e3-5f0c-4882-b9a8-262588b29050}" name="guidDXVSExtensionPackageCmdSet">
       <IDSymbol value="4128" name="MyMenuGroup" />
       <IDSymbol value="256" name="cmdidOpenInForkCommand" />
+      <IDSymbol value="4129" name="cmdidDeleteBaseCommand" />
     </GuidSymbol>
   
     <GuidSymbol value="{c1943d50-1827-41ca-a8db-52cf2fdf5d30}" name="guidImages2">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
+  
+    <GuidSymbol value="{ebe07245-6852-49c4-a6c1-e139e59c3ea8}" name="guidImages3">
       <IDSymbol name="bmpPic1" value="1" />
       <IDSymbol name="bmpPic2" value="2" />
       <IDSymbol name="bmpPicSearch" value="3" />
@@ -133,6 +137,7 @@
     </Groups>
     <Bitmaps>
       <Bitmap guid="guidImages2" href="Resources\OpenInForkCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages3" href="Resources\DeleteBaseCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
     <Buttons>
       <Button guid="guidDXVSExtensionPackageCmdSet" id="cmdidOpenInForkCommand" priority="0x0100" type="Button">
@@ -140,6 +145,13 @@
         <Icon guid="guidImages2" id="bmpPic1" />
         <Strings>
           <ButtonText>Invoke OpenInForkCommand</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDXVSExtensionPackageCmdSet" id="cmdidDeleteBaseCommand" priority="0x0100" type="Button">
+        <Parent guid="guidDXVSExtensionPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages3" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Invoke DeleteBaseCommand</ButtonText>
         </Strings>
       </Button>
     </Buttons>

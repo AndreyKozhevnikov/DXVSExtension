@@ -91,9 +91,9 @@ namespace DXVSExtension {
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             var dte = await GetServiceAsync(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
             var solutionFullName = dte.Solution.FullName;
-            await DeleteBaseCommand.InitializeAsync(this, solutionFullName);
             await BackupDatabaseCommand.InitializeAsync(this, solutionFullName);
             await OpenInForkCommand.InitializeAsync(this, solutionFullName);
+            await DeleteBaseCommand.InitializeAsync(this, solutionFullName);
         }
 
         #endregion

@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -21,12 +15,12 @@ namespace DXVSExtension {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 0x0100;
+        public const int CommandId = 4129;
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("f232d43b-f5f2-4501-8213-74a88da4930a");
+        public static readonly Guid CommandSet = new Guid("e74349e3-5f0c-4882-b9a8-262588b29050");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -65,13 +59,11 @@ namespace DXVSExtension {
             }
         }
 
-
-
         /// <summary>
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static async Task InitializeAsync(AsyncPackage package,string _solutionFullName) {
+        public static async Task InitializeAsync(AsyncPackage package, string _solutionFullName) {
             // Switch to the main thread - the call to AddCommand in DeleteBaseCommand's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
