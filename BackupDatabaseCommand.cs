@@ -3,7 +3,6 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -16,12 +15,12 @@ namespace DXVSExtension {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 4129;
+        public const int CommandId = 4130;
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("f232d43b-f5f2-4501-8213-74a88da4930a");
+        public static readonly Guid CommandSet = new Guid("e74349e3-5f0c-4882-b9a8-262588b29050");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -94,7 +93,6 @@ namespace DXVSExtension {
                     OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
             }
         }
-
         void backupDB(string dbName, string backupPath) {
             DXVSExtensionPackage options = package as DXVSExtensionPackage;
             var deleteProcessPath = options.BackupDBFilePath;
@@ -102,7 +100,7 @@ namespace DXVSExtension {
             proc.StartInfo.FileName = deleteProcessPath;
             backupPath = "\"" + backupPath + "\"";
             proc.StartInfo.Arguments = string.Join(" ", new string[] { dbName, backupPath });
-            proc.Start();
+            proc.Start(); 
         }
-    }
+        }
 }

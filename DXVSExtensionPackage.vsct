@@ -22,57 +22,7 @@
 
   <!--The Commands section is where commands, menus, and menu groups are defined.
       This section uses a Guid to identify the package that provides the command defined inside it. -->
-  <Commands package="guidDeleteBaseCommandPackage">
-    <!-- Inside this section we have different sub-sections: one for the menus, another
-    for the menu groups, one for the buttons (the actual commands), one for the combos
-    and the last one for the bitmaps used. Each element is identified by a command id that
-    is a unique pair of guid and numeric identifier; the guid part of the identifier is usually
-    called "command set" and is used to group different command inside a logically related
-    group; your package should define its own command set in order to avoid collisions
-    with command ids defined by other packages. -->
-
-    <!-- In this section you can define new menu groups. A menu group is a container for
-         other menus or buttons (commands); from a visual point of view you can see the
-         group as the part of a menu contained between two lines. The parent of a group
-         must be a menu. -->
-    <Groups>
-      <Group guid="guidDeleteBaseCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS" />
-      </Group>
-    </Groups>
-
-    <!--Buttons section. -->
-    <!--This section defines the elements the user can interact with, like a menu command or a button
-        or combo box in a toolbar. -->
-    <Buttons>
-      <!--To define a menu group you have to specify its ID, the parent menu and its display priority.
-          The command is visible and enabled by default. If you need to change the visibility, status, etc, you can use
-          the CommandFlag node.
-          You can add more than one CommandFlag node e.g.:
-              <CommandFlag>DefaultInvisible</CommandFlag>
-              <CommandFlag>DynamicVisibility</CommandFlag>
-          If you do not want an image next to your command, remove the Icon node /> -->
-
-      <Button guid="guidDeleteBaseCommandPackageCmdSet" id="cmdidBackupDatabaseCommand" priority="0x0100" type="Button">
-        <Parent guid="guidDeleteBaseCommandPackageCmdSet" id="MyMenuGroup" />
-        <Icon guid="guidImages1" id="bmpPic1" />
-        <Strings>
-          <ButtonText>Invoke BackupDatabaseCommand</ButtonText>
-        </Strings>
-      </Button>
-    </Buttons>
-
-    <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
-    <Bitmaps>
-      <!--  The bitmap id is defined in a way that is a little bit different from the others:
-            the declaration starts with a guid for the bitmap strip, then there is the resource id of the
-            bitmap strip containing the bitmaps and then there are the numeric ids of the elements used
-            inside a button definition. An important aspect of this declaration is that the element id
-            must be the actual index (1-based) of the bitmap inside the bitmap strip. -->
-      <Bitmap guid="guidImages" href="Resources\DeleteBaseCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
-      <Bitmap guid="guidImages1" href="Resources\BackupDatabaseCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
-    </Bitmaps>
-  </Commands>
+  
 
   <Symbols>
     <!-- This is the package guid. -->
@@ -109,6 +59,7 @@
       <IDSymbol value="4128" name="MyMenuGroup" />
       <IDSymbol value="256" name="cmdidOpenInForkCommand" />
       <IDSymbol value="4129" name="cmdidDeleteBaseCommand" />
+      <IDSymbol value="4130" name="cmdidBackupDatabaseCommand" />
     </GuidSymbol>
   
     <GuidSymbol value="{c1943d50-1827-41ca-a8db-52cf2fdf5d30}" name="guidImages2">
@@ -128,6 +79,15 @@
       <IDSymbol name="bmpPicArrows" value="5" />
       <IDSymbol name="bmpPicStrikethrough" value="6" />
     </GuidSymbol>
+  
+    <GuidSymbol value="{78946b53-fe2a-4c9d-9ff6-41fa52095d2d}" name="guidImages4">
+      <IDSymbol name="bmpPic1" value="1" />
+      <IDSymbol name="bmpPic2" value="2" />
+      <IDSymbol name="bmpPicSearch" value="3" />
+      <IDSymbol name="bmpPicX" value="4" />
+      <IDSymbol name="bmpPicArrows" value="5" />
+      <IDSymbol name="bmpPicStrikethrough" value="6" />
+    </GuidSymbol>
   </Symbols>
   <Commands package="guidDXVSExtensionPackage">
     <Groups>
@@ -138,6 +98,7 @@
     <Bitmaps>
       <Bitmap guid="guidImages2" href="Resources\OpenInForkCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
       <Bitmap guid="guidImages3" href="Resources\DeleteBaseCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
+      <Bitmap guid="guidImages4" href="Resources\BackupDatabaseCommand.png" usedList="bmpPic1, bmpPic2, bmpPicSearch, bmpPicX, bmpPicArrows, bmpPicStrikethrough" />
     </Bitmaps>
     <Buttons>
       <Button guid="guidDXVSExtensionPackageCmdSet" id="cmdidOpenInForkCommand" priority="0x0100" type="Button">
@@ -152,6 +113,13 @@
         <Icon guid="guidImages3" id="bmpPic1" />
         <Strings>
           <ButtonText>Invoke DeleteBaseCommand</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="guidDXVSExtensionPackageCmdSet" id="cmdidBackupDatabaseCommand" priority="0x0100" type="Button">
+        <Parent guid="guidDXVSExtensionPackageCmdSet" id="MyMenuGroup" />
+        <Icon guid="guidImages4" id="bmpPic1" />
+        <Strings>
+          <ButtonText>Invoke BackupDatabaseCommand</ButtonText>
         </Strings>
       </Button>
     </Buttons>
