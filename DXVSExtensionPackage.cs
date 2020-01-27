@@ -89,9 +89,11 @@ namespace DXVSExtension {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            await DeleteBaseCommand.InitializeAsync(this);
-            await BackupDatabaseCommand.InitializeAsync(this);
-            await OpenInForkCommand.InitializeAsync(this);
+            var dte = await GetServiceAsync(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+            var solutionFullName = dte.Solution.FullName;
+            await DeleteBaseCommand.InitializeAsync(this, solutionFullName);
+            await BackupDatabaseCommand.InitializeAsync(this, solutionFullName);
+            await OpenInForkCommand.InitializeAsync(this, solutionFullName);
         }
 
         #endregion

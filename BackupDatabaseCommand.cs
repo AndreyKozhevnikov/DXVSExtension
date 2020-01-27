@@ -64,15 +64,16 @@ namespace DXVSExtension {
         /// Initializes the singleton instance of the command.
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
-        public static async Task InitializeAsync(AsyncPackage package) {
+        public static async Task InitializeAsync(AsyncPackage package, string _solutionFullName) {
             // Switch to the main thread - the call to AddCommand in BackupDatabaseCommand's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
             Instance = new BackupDatabaseCommand(package, commandService);
+            Instance.solutionFullName = _solutionFullName;
         }
-
+        string solutionFullName;
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
         /// See the constructor to see how the menu item is associated with this function using
@@ -80,10 +81,8 @@ namespace DXVSExtension {
         /// </summary>
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
-        private async void Execute(object sender, EventArgs e) {
-            DTE dte = await package.GetServiceAsync(typeof(DTE)).ConfigureAwait(false) as DTE;
-            var slnName = dte.Solution.FullName;
-            var solutionData = new SolutionDataProvider(slnName);
+        private void Execute(object sender, EventArgs e) {
+            var solutionData = new SolutionDataProvider(solutionFullName);
             if(solutionData.DatabaseName != null) {
                 backupDB(solutionData.DatabaseName, solutionData.SoluitonParentFolderName);
             } else {
@@ -102,7 +101,7 @@ namespace DXVSExtension {
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
             proc.StartInfo.FileName = deleteProcessPath;
             backupPath = "\"" + backupPath + "\"";
-            proc.StartInfo.Arguments = string.Join(" ", new string[] { dbName,backupPath });
+            proc.StartInfo.Arguments = string.Join(" ", new string[] { dbName, backupPath });
             proc.Start();
         }
     }
