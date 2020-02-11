@@ -23,7 +23,9 @@ namespace DXVSExtension {
                     var xDocument = XDocument.Load(confFile);
                     var el = xDocument.Root;
                     var el2 = xDocument.Root.Elements();
-                    var configNode = xDocument.Root.Elements().Where(x => x.Name.LocalName == "connectionStrings").First();
+                    var configNode = xDocument.Root.Elements().Where(x => x.Name.LocalName == "connectionStrings").FirstOrDefault();
+                    if(configNode == null)
+                        continue;
                     var configs = configNode.Elements();
                     var nameXName = XName.Get("name", configNode.Name.Namespace.NamespaceName);
 
