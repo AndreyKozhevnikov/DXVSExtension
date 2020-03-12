@@ -81,7 +81,8 @@ namespace DXVSExtension {
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
         private void Execute(object sender, EventArgs e) {
-            var solutionData = new SolutionDataProvider(solutionFullName);
+            var solutionData = new SolutionDataProvider();
+            solutionData.GetDataFromSolution(solutionFullName);
             if(solutionData.DatabaseName != null) {
                 DeleteDb(solutionData.DatabaseName);
             } else {
