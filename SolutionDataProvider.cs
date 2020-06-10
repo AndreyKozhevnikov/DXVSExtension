@@ -22,6 +22,9 @@ namespace DXVSExtension {
                 using(var sw = new StreamReader(confFile)) {
                     var xDocument = XDocument.Load(confFile);
                     DatabaseName = GetDBName(xDocument);
+                    if(!string.IsNullOrEmpty(DatabaseName)) {
+                        break;
+                    }
                 }
             }
         }
