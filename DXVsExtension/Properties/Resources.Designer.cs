@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DXVSExtension.Properties {
+namespace DXVsExtension.Properties {
     using System;
     
     
@@ -19,7 +19,7 @@ namespace DXVSExtension.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -39,7 +39,7 @@ namespace DXVSExtension.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DXVSExtension.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DXVsExtension.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -90,9 +90,9 @@ namespace DXVSExtension.Properties {
         ///  &lt;/connectionStrings&gt;
         ///&lt;/configuration&gt;.
         /// </summary>
-        internal static string AppXAF_config {
+        internal static string AppXAF {
             get {
-                return ResourceManager.GetString("AppXAF_config", resourceCulture);
+                return ResourceManager.GetString("AppXAF", resourceCulture);
             }
         }
         

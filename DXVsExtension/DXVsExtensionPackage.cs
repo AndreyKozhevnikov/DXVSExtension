@@ -1,20 +1,14 @@
-﻿using System;
-using System.ComponentModel;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.OLE.Interop;
+﻿using DXVSExtension;
+using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
-using Microsoft.Win32;
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Threading;
 using Task = System.Threading.Tasks.Task;
 
-namespace DXVSExtension {
+namespace DXVsExtension {
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
     /// </summary>
@@ -33,48 +27,14 @@ namespace DXVSExtension {
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
+    [Guid(DXVsExtensionPackage.PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [Guid(DXVSExtensionPackage.PackageGuidString)]
-    [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
     [ProvideOptionPage(typeof(OptionPageGrid), "DXVSExtenstion", "Extension properties", 0, 0, true)]
-    public sealed class DXVSExtensionPackage : AsyncPackage {
+    public sealed class DXVsExtensionPackage : AsyncPackage {
         /// <summary>
-        /// DeleteBaseCommandPackage GUID string.
+        /// DXVsExtensionPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "93087a61-01c5-4d3a-9a65-38877026106d";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DXVSExtensionPackage"/> class.
-        /// </summary>
-        public DXVSExtensionPackage() {
-            // Inside this method you can place any initialization code that does not require
-            // any Visual Studio service because at this point the package object is created but
-            // not sited yet inside Visual Studio environment. The place to do all the other
-            // initialization is the Initialize method.
-        }
-
-        public string DeleteProgramFilePath {
-            get {
-                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
-                var st = page.DeleteProgramFilePath;
-                return st;
-            }
-        }
-        public string BackupDBFilePath {
-            get {
-                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
-                var st = page.BackupDBFilePath;
-                return st;
-            }
-        }
-        public string ForkFilePath {
-            get {
-                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
-                var st = page.ForkFilePath;
-                return st;
-            }
-        }
-
+        public const string PackageGuidString = "0e684759-a802-4f2f-825f-d849afda8ebd";
 
         #region Package Members
 
@@ -89,16 +49,35 @@ namespace DXVSExtension {
             // When initialized asynchronously, the current thread may be a background thread at this point.
             // Do any initialization that requires the UI thread after switching to the UI thread.
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            var dte = await GetServiceAsync(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
-            var solutionFullName = dte.Solution.FullName;
+            DTE dte2 = System.Runtime.InteropServices.Marshal.GetActiveObject("VisualStudio.DTE") as DTE; 
+            string solutionFullName = dte2.Solution.FullName;
             await BackupDatabaseCommand.InitializeAsync(this, solutionFullName);
             await OpenInForkCommand.InitializeAsync(this, solutionFullName);
             await DeleteBaseCommand.InitializeAsync(this, solutionFullName);
         }
-
+        public string BackupDBFilePath {
+            get {
+                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                var st = page.BackupDBFilePath;
+                return st;
+            }
+        }
+        public string DeleteProgramFilePath {
+            get {
+                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                var st = page.DeleteProgramFilePath;
+                return st;
+            }
+        }
+        public string ForkFilePath {
+            get {
+                OptionPageGrid page = (OptionPageGrid)GetDialogPage(typeof(OptionPageGrid));
+                var st = page.ForkFilePath;
+                return st;
+            }
+        }
         #endregion
     }
-
     public class OptionPageGrid : DialogPage {
         private string _deleteProgramFilePath = @"c:\Dropbox\Deploy\DelMSSQLDataBase\DelMSSQLDataBase.exe";
         [Category("DeleteProgramFilePath")]

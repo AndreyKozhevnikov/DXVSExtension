@@ -1,4 +1,5 @@
-﻿using DXVSExtension.Properties;
+﻿
+using DXVsExtension.Properties;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace DXVSExtension.Tests {
         [Test]
         public void xafConfig() {
             //arrang
-            var confFile = Resources.AppXAF_config;
+            var confFile = Resources.AppXAF;
             var xDocument = XDocument.Parse(confFile);
             var provider = new SolutionDataProvider();
 

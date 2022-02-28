@@ -121,10 +121,10 @@
   <data name="AppTrueXAF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AppTrueXAF.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
-  <data name="AppXAF_config" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="AppXAF" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\AppXAF.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
   <data name="dxT866644(nonxaf)_config" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\App.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+    <value>..\Resources\app.config;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
 </root>

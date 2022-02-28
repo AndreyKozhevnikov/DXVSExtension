@@ -1,13 +1,14 @@
-﻿using System;
+﻿using DXVSExtension;
+using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
 using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 
-namespace DXVSExtension {
+namespace DXVsExtension {
     /// <summary>
     /// Command handler
     /// </summary>
@@ -15,12 +16,12 @@ namespace DXVSExtension {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 4130;
+        public const int CommandId = 4129;
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("e74349e3-5f0c-4882-b9a8-262588b29050");
+        public static readonly Guid CommandSet = new Guid("9d1275d5-18bd-4ab6-bbcf-8c63b58333f9");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -95,7 +96,7 @@ namespace DXVSExtension {
             }
         }
         void backupDB(string dbName, string backupPath) {
-            DXVSExtensionPackage options = package as DXVSExtensionPackage;
+            DXVsExtensionPackage options = package as DXVsExtensionPackage;
             var deleteProcessPath = options.BackupDBFilePath;
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
             proc.StartInfo.FileName = deleteProcessPath;
@@ -104,4 +105,5 @@ namespace DXVSExtension {
             proc.Start();
         }
     }
+
 }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Design;
 using System.Globalization;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using DXVsExtension;
+using EnvDTE;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -11,16 +14,16 @@ namespace DXVSExtension {
     /// <summary>
     /// Command handler
     /// </summary>
-    internal sealed class DeleteBaseCommand {
+    internal sealed class OpenInForkCommand {
         /// <summary>
         /// Command ID.
         /// </summary>
-        public const int CommandId = 4129;
+        public const int CommandId = 4131;
 
         /// <summary>
         /// Command menu group (command set GUID).
         /// </summary>
-        public static readonly Guid CommandSet = new Guid("e74349e3-5f0c-4882-b9a8-262588b29050");
+        public static readonly Guid CommandSet = new Guid("9d1275d5-18bd-4ab6-bbcf-8c63b58333f9");
 
         /// <summary>
         /// VS Package that provides this command, not null.
@@ -28,12 +31,12 @@ namespace DXVSExtension {
         private readonly AsyncPackage package;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DeleteBaseCommand"/> class.
+        /// Initializes a new instance of the <see cref="OpenInForkCommand"/> class.
         /// Adds our command handlers for menu (commands must exist in the command table file)
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         /// <param name="commandService">Command service to add command to, not null.</param>
-        private DeleteBaseCommand(AsyncPackage package, OleMenuCommandService commandService) {
+        private OpenInForkCommand(AsyncPackage package, OleMenuCommandService commandService) {
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
@@ -45,7 +48,7 @@ namespace DXVSExtension {
         /// <summary>
         /// Gets the instance of the command.
         /// </summary>
-        public static DeleteBaseCommand Instance {
+        public static OpenInForkCommand Instance {
             get;
             private set;
         }
@@ -64,12 +67,12 @@ namespace DXVSExtension {
         /// </summary>
         /// <param name="package">Owner package, not null.</param>
         public static async Task InitializeAsync(AsyncPackage package, string _solutionFullName) {
-            // Switch to the main thread - the call to AddCommand in DeleteBaseCommand's constructor requires
+            // Switch to the main thread - the call to AddCommand in OpenInForkCommand's constructor requires
             // the UI thread.
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(package.DisposalToken);
 
             OleMenuCommandService commandService = await package.GetServiceAsync(typeof(IMenuCommandService)) as OleMenuCommandService;
-            Instance = new DeleteBaseCommand(package, commandService);
+            Instance = new OpenInForkCommand(package, commandService);
             Instance.solutionFullName = _solutionFullName;
         }
         string solutionFullName;
@@ -81,26 +84,18 @@ namespace DXVSExtension {
         /// <param name="sender">Event sender.</param>
         /// <param name="e">Event args.</param>
         private void Execute(object sender, EventArgs e) {
-            var solutionData = new SolutionDataProvider();
-            solutionData.GetDataFromSolution(solutionFullName);
-            if(solutionData.DatabaseName != null) {
-                DeleteDb(solutionData.DatabaseName);
-            } else {
-                VsShellUtilities.ShowMessageBox(this.package,
-                    "No database was found",
-                    "Not found",
-                    OLEMSGICON.OLEMSGICON_INFO,
-                    OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                    OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
-            }
+            //DTE dte = await package.GetServiceAsync(typeof(DTE)).ConfigureAwait(false) as DTE;
+            //  var slnName = dte.Solution.FullName;
+            var solutionFolderName = Path.GetDirectoryName(solutionFullName);
+            openInFork(solutionFolderName);
         }
-
-        public void DeleteDb(string dbName) {
-            DXVSExtensionPackage options = package as DXVSExtensionPackage;
-            var deleteProcessPath = options.DeleteProgramFilePath;
+        void openInFork(string gitFolderName) {
+            DXVsExtensionPackage options = package as DXVsExtensionPackage;
+            var forkPath = options.ForkFilePath;
             System.Diagnostics.Process proc = new System.Diagnostics.Process();
-            proc.StartInfo.FileName = deleteProcessPath;
-            proc.StartInfo.Arguments = "-" + dbName;
+            proc.StartInfo.FileName = forkPath;
+            gitFolderName = "\"" + gitFolderName + "\"";
+            proc.StartInfo.Arguments = gitFolderName;
             proc.Start();
         }
     }

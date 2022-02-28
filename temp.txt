@@ -1,3 +1,0 @@
-DXVSExtension
-
-        DTE dte = await package.GetServiceAsync(typeof(DTE)).ConfigureAwait(false) as DTE;
