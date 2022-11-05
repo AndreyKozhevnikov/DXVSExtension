@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,6 +28,17 @@ namespace DXVSExtension {
                     }
                 }
             }
+            List<string> jsonConfigFiles = new List<string>();
+            jsonConfigFiles.AddRange(Directory.GetFiles(solutionFolderName, "appsettings.json", SearchOption.AllDirectories));
+            foreach(var jsonFile in jsonConfigFiles) {
+                var jsonString = File.ReadAllText(jsonFile);
+                var jsonObject = (JObject)Newtonsoft.Json.JsonConvert.DeserializeObject(jsonString);
+                DatabaseName = GetDBName(jsonObject);
+                if(!string.IsNullOrEmpty(DatabaseName)) {
+                    break;
+                }
+            }
+
         }
 
         internal string GetDBName(XDocument xDocument) {
@@ -50,15 +62,43 @@ namespace DXVSExtension {
             }
         }
 
+        internal string GetDBName(JObject jsonObject) {
+            var connStrings = jsonObject.SelectToken("ConnectionStrings") as JObject;
+            if(connStrings == null) {
+                return null;
+            }
+          
+            var realConfig = connStrings["ConnectionString"];
+
+            if(realConfig != null) {
+                return GetDbNameFromConnectionStringLine(realConfig);
+            } else {
+                if(connStrings.Count == 1) {
+                    var possibleConfig = connStrings[0];
+                    return GetDbNameFromConnectionStringLine(possibleConfig);
+                }
+                return null;
+            }
+        }
+        public string GetDbNameFromConnectionStringLine(JToken jToken) {
+            var connectionString = ((JValue) jToken).Value.ToString();
+            var dbName = GetDBNameFromString(connectionString);
+            return dbName;
+        }
         public string GetDbNameFromConnectionStringLine(XElement connectionStringLine, string nameSpace) {
             var nameXConnectionString = XName.Get("connectionString", nameSpace);
             var connectionString = connectionStringLine.Attribute(nameXConnectionString).Value;
+            var dbName = GetDBNameFromString(connectionString);
+            return dbName;
+
+        }
+
+        public string GetDBNameFromString(string connectionString) {
             var dbNamePattern = @"Initial Catalog=(?<dbname>.*)";
-            var dbNameRegex = new Regex(dbNamePattern,RegexOptions.IgnoreCase);
+            var dbNameRegex = new Regex(dbNamePattern, RegexOptions.IgnoreCase);
             Match dbNameMatch = dbNameRegex.Match(connectionString);
             var dbName = dbNameMatch.Groups["dbname"].Value;
             return dbName;
-
         }
     }
 }

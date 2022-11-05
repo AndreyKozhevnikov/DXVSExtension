@@ -57,21 +57,21 @@
         <Parent guid="guidDXVsExtensionPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages1" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke BackupDatabaseCommand</ButtonText>
+          <ButtonText>BackupDatabaseCommand</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidDXVsExtensionPackageCmdSet" id="cmdidDeleteBaseCommand" priority="0x0100" type="Button">
         <Parent guid="guidDXVsExtensionPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages2" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke DeleteBaseCommand</ButtonText>
+          <ButtonText>DeleteBaseCommand</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidDXVsExtensionPackageCmdSet" id="cmdidOpenForkCommand" priority="0x0100" type="Button">
         <Parent guid="guidDXVsExtensionPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages3" id="bmpPic1" />
         <Strings>
-          <ButtonText>Invoke Open Fork</ButtonText>
+          <ButtonText>Open Fork</ButtonText>
         </Strings>
       </Button>
     </Buttons>
