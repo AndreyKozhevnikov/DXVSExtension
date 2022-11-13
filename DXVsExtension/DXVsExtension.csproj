@@ -67,6 +67,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="DataBaseCreatorLib">
+      <HintPath>..\..\..\Deploy\THelperDeploy\DataBaseCreatorLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="nunit.framework">
       <HintPath>..\..\..\Deploy\Dll181\nunit.framework.dll</HintPath>

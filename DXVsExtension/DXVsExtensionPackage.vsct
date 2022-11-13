@@ -64,7 +64,7 @@
         <Parent guid="guidDXVsExtensionPackageCmdSet" id="MyMenuGroup" />
         <Icon guid="guidImages2" id="bmpPic1" />
         <Strings>
-          <ButtonText>DeleteBaseCommand</ButtonText>
+          <ButtonText>RecreateDataBase</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidDXVsExtensionPackageCmdSet" id="cmdidOpenForkCommand" priority="0x0100" type="Button">

@@ -86,6 +86,8 @@ namespace DXVSExtension {
             solutionData.GetDataFromSolution(solutionFullName);
             if(solutionData.DatabaseName != null) {
                 DeleteDb(solutionData.DatabaseName);
+                Thread.Sleep(500);
+                DataBaseCreatorLib.DataBaseCreator.CreateBase(solutionData.DatabaseName);
             } else {
                 VsShellUtilities.ShowMessageBox(this.package,
                     "No database was found",
