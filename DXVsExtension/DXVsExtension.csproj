@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BackupDatabaseCommand.cs" />
+    <Compile Include="BaseRemover.cs" />
     <Compile Include="DeleteBaseCommand.cs" />
     <Compile Include="OpenInForkCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +56,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RecreateBaseCommand.cs" />
     <Compile Include="SolutionDataProvider.cs" />
     <Compile Include="Tests\SolutionDataProviderTests.cs" />
   </ItemGroup>
@@ -93,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\BackupDatabaseCommand.png" />
+    <Content Include="Resources\RecreateBaseCommand.png" />
     <Content Include="Resources\TestCommand1.png" />
   </ItemGroup>
   <ItemGroup>

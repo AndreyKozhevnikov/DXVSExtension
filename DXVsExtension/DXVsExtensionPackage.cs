@@ -58,6 +58,7 @@ namespace DXVsExtension {
             await BackupDatabaseCommand.InitializeAsync(this, solutionFullName);
             await OpenInForkCommand.InitializeAsync(this, solutionFullName);
             await DeleteBaseCommand.InitializeAsync(this, solutionFullName);
+    await RecreateBaseCommand.InitializeAsync(this, solutionFullName);
         }
         public string BackupDBFilePath {
             get {
