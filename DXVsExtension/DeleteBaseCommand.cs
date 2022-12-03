@@ -7,6 +7,7 @@ using DXVsExtension;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
+using DataBaseCreatorLib ;
 
 namespace DXVSExtension {
     /// <summary>
@@ -87,7 +88,7 @@ namespace DXVSExtension {
             if(solutionData.DatabaseName != null) {
                 DeleteDb(solutionData.DatabaseName);
                 Thread.Sleep(500);
-                DataBaseCreatorLib.DataBaseCreator.CreateBase(solutionData.DatabaseName);
+                DataBaseCreator.CreateBase(solutionData.DatabaseName);
             } else {
                 VsShellUtilities.ShowMessageBox(this.package,
                     "No database was found",
